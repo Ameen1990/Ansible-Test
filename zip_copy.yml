@@ -1,23 +1,35 @@
 ---
 
 -  hosts: all
-   become: true 
-   pre_tasks:
-   - name: Update the machine
-     tags: always
+   tasks:
+   - name: Update all machines
+     tags: update
      yum:
        update_only: yes
      when: ansible_distribution == "CentOS"
 
 -  hosts: local_c2
    tasks:
-
-   - name: install some snapd
-     tags: always
+   - name: install snapd package
+     tags: snapd
      yum:
        name: snapd
      when: ansible_distribution == "CentOS"
+   
+   - name: install unzip, it is a must, so that terraform can function
+     tags: zipping
+     package:
+       name: unzip
 
+   - name: installing terraform
+     tags: zipping
+     unarchive:
+       src: https://releases.hashicorp.com/terraform/1.0.11/terraform_1.0.11_linux_amd64.zip
+       dest: /usr/local/bin
+       remote_src: yes
+       owner: root
+       group: root
+       mode: 0755
 
 -  hosts: local_c3
    tasks:
@@ -44,6 +56,7 @@
        name: mariadb-server
        state: latest
      when: ansible_distribution == "CentOS"
+
 
    - name: install package on Ubuntu
      tags: mariadb,ubuntu
