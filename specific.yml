@@ -1,0 +1,44 @@
+---
+
+-  hosts: all
+   tasks:
+   - name: Update the machine
+     yum:
+       update_only: yes
+     when: ansible_distribution == "CentOS"
+
+-  hosts: local_c2
+   tasks:
+
+   - name: install some snapd
+     yum:
+       name: snapd
+     when: ansible_distribution == "CentOS"
+
+
+-  hosts: local_c3
+   tasks:
+   - name: install nmap
+     yum:
+       name: nmap
+       state: latest
+     when: ansible_distribution == "CentOS"
+
+   - name: install mariadb package on CentOS
+     yum:
+       name: mariadb-server
+       state: latest
+     when: ansible_distribution == "CentOS"
+
+#   - name: install package on Ubuntu
+#     yum:
+#       name: nano
+#       state:latest
+#     when: ansible_distribution == "CentOS"
+
+   - name: install package on Ubuntu
+     apt:
+       name: mariadb-server
+       state: latest
+     when: ansible_distribution == "Ubuntu"
+
