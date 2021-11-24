@@ -1,0 +1,20 @@
+---
+
+-  hosts: all
+   become: true
+   tasks:
+  
+   - name: install some package
+     yum:
+       name: snapd
+
+     when : ansible_distribution == "CentOS"
+   
+
+   - name: install nmap
+     yum:
+       name: nmap
+       state: latest
+     when: ansible_distribution == "CentOS"
+
+
