@@ -1,8 +1,0 @@
----
-  - name: bring_nano
-    hosts: my_group
-    tasks:
-      - name: ensure nano editor is there
-        yum:
-          name: nano
-          state: latest
