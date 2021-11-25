@@ -1,0 +1,34 @@
+---
+-  hosts: all
+   gather_facts: No
+   tasks:
+   - name: Update the machine
+     tags: update
+     yum:
+       update_only: yes
+     
+
+-  hosts: local_c2
+#   gather_facts: no
+   tasks:
+   - name: Insert line in a file
+     tags: httpd, c2
+     lineinfile:
+       path: /etc/httpd/conf/httpd.conf
+       regexp: '^ServerName'
+       line: 'New added Line by Ansible'
+     register: pizza
+
+   - name: Restart httpd service
+     tags: httpd, c2
+     service: 
+       name: httpd
+       state: restarted
+     when: pizza.changed 
+
+
+   - name: Adding new user
+     tags: user
+     user: 
+       name: am90
+       groups: root
