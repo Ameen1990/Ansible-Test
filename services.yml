@@ -33,21 +33,6 @@
        enabled: yes
      when: ansible_distribution == "CentOS"
 
-   - name: Insert line in a file
-     tags: httpd, c2
-     lineinfile:
-       path: /etc/httpd/conf/httpd.conf
-       regexp: '^ServerName'
-       line: 'New added Line by Ansible'
-     register: pizza
-
-   - name: Restart httpd service
-     tags: httpd, c2
-     service: 
-       name: httpd
-       state: restarted
-     when: pizza.changed 
-
 
    - name: install unzip
      tags: zipping,c2
