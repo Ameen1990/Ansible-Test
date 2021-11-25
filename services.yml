@@ -37,15 +37,16 @@
      tags: httpd, c2
      lineinfile:
        path: /etc/httpd/conf/httpd.conf
-       regexp: "^ServerName"
+       regexp: '^ServerName'
        line: 'New added Line by Ansible'
-       register: pizza
+     register: pizza
 
    - name: Restart httpd service
      tags: httpd, c2
-       service: httpd
+     service: 
+       name: httpd
        state: restarted
-     when: pizza.changed 
+      when: pizza.changed 
 
 
    - name: install unzip
