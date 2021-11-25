@@ -25,15 +25,6 @@
          - php
      when: ansible_distribution == "CentOS"
 
-   - name: Starting httpd service
-     tags: apache,c2
-     service:
-       name: httpd
-       state: started
-       enabled: yes
-     when: ansible_distribution == "CentOS"
-
-
    - name: install unzip
      tags: zipping,c2
      package:
