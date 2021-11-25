@@ -1,0 +1,15 @@
+---
+
+-  hosts: all
+   roles:
+     - role_1
+
+
+-  hosts: local_c2
+   roles:
+     - role_1
+
+
+-  hosts: local_c3
+   roles:
+     - role_2
