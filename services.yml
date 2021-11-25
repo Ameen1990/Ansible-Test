@@ -1,5 +1,4 @@
 ---
-# new
 -  hosts: all
    gather_facts: No
    tasks:
@@ -34,6 +33,21 @@
        enabled: yes
      when: ansible_distribution == "CentOS"
 
+   - name: Insert line in a file
+     tags: httpd, c2
+     lineinfile:
+       path: /etc/httpd/conf/httpd.conf
+       regexp: "^ServerName"
+       line: 'New added Line by Ansible'
+       register: pizza
+
+   - name: Restart httpd service
+     tags: httpd, c2
+       service: httpd
+       state: restarted
+     when: pizza.changed 
+
+
    - name: install unzip
      tags: zipping,c2
      package:
@@ -51,7 +65,7 @@
 
 
 -  hosts: local_c3
-#   gather_facts: no
+#  gather_facts: no
    tasks:
    - name: install nmap
      tags: centos,c3
@@ -69,6 +83,7 @@
        owner: root
        group: root
        mode: 0644
+
 
 
    - name: install mariadb package on CentOS
