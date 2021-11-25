@@ -46,7 +46,7 @@
      service: 
        name: httpd
        state: restarted
-      when: pizza.changed 
+     when: pizza.changed 
 
 
    - name: install unzip
