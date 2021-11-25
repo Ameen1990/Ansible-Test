@@ -1,0 +1,87 @@
+---
+
+-  hosts: all
+   gather_facts: No
+   tasks:
+   - name: Update the machine
+     tags: update
+     yum:
+       update_only: yes
+     
+
+-  hosts: local_c2
+#   gather_facts: no
+   tasks:
+   - name: install snapd deamon, required later to install k8s.
+     tags: c2,snapd 
+     yum:
+       name: snapd
+       state: latest
+
+   - name: install some packagess
+     tags: apache,c2
+     yum:
+       name:
+         - httpd
+         - php
+     when: ansible_distribution == "CentOS"
+
+   - name: Starting httpd service
+     tags: apache,c2
+     service:
+       name: httpd
+       state: started
+       enabled: yes
+     when: ansible_distribution == "CentOS"
+
+   - name: install unzip
+     tags: zipping,c2
+     package:
+       name: unzip
+
+   - name: unarchive
+     tags: zipping,c2
+     unarchive:
+       src: https://releases.hashicorp.com/terraform/1.0.11/terraform_1.0.11_linux_amd64.zip
+       dest: /usr/local/bin
+       remote_src: yes
+       owner: root
+       group: root
+       mode: 0755
+
+
+-  hosts: local_c3
+#   gather_facts: no
+   tasks:
+   - name: install nmap
+     tags: centos,c3
+     yum:
+       name: nmap
+       state: latest
+     when: ansible_distribution == "CentOS"
+
+
+   - name: copying from repo to c3 machine
+     tags: copy,c3
+     copy:
+       src: sample.txt
+       dest: /var/local/sample.txt
+       owner: root
+       group: root
+       mode: 0644
+
+
+   - name: install mariadb package on CentOS
+     tags: centos,mariadb,c3
+     yum:
+       name: mariadb-server
+       state: latest
+     when: ansible_distribution == "CentOS"
+
+
+   - name: install package on Ubuntu
+     tags: mariadb,ubuntu,c3
+     apt:
+       name: mariadb-server
+       state: latest
+     when: ansible_distribution == "Ubuntu"
