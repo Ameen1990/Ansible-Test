@@ -14,7 +14,11 @@
 
   - name: Install yum utils
     yum:
-      name: [ yum-utils, device-mapper-persistent-data, lvm2, epel-release]
+      name:
+        - yum-utils
+        - device-mapper-persistent-data
+        - lvm2
+        - epel-release
       state: latest
 
 
