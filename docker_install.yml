@@ -14,13 +14,8 @@
 
   - name: Install yum utils
     yum:
-      name:
-        - yum-utils
-        - device-mapper-persistent-data
-        - lvm2
-        - epel-release
+      name: yum-utils
       state: latest
-
 
   - name: Add Docker repo
       get_url:
